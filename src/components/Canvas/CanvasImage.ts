@@ -17,6 +17,35 @@ export default class CanvasImage {
     this.data.fill(255 << 24);
   }
 
+  setPixel(x: number, y: number, value: number[]) {
+    if (x < 0 || x >= this.w || y < 0 || y >= this.h)
+      return;
+
+    this.data[y * this.w + x] =
+      value[0] +
+      (value[1] << 8) +
+      (value[2] << 16) +
+      (value[3] << 24);
+  }
+
+  flipVertical() {
+    let a = 0;
+    let b = this.h - 1;
+
+    while (a < b) {
+      for (let i = 0; i < this.w; i++) {
+        let c = this.data[a * this.w + i];
+        let d = this.data[b * this.w + i];
+
+        this.data[a * this.w + i] = d;
+        this.data[b * this.w + i] = c;
+      }
+
+      a++;
+      b--;
+    }
+  }
+
   writeToCanvas(canvas: HTMLCanvasElement) {
     canvas.height = this.h;
     canvas.width = this.w;
