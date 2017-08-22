@@ -12,7 +12,7 @@ module.exports = {
     inject: 'body'
   })],
   resolve: {
-    extensions: [".tsx", ".js", ".scss"]
+    extensions: [".ts", ".tsx", ".js", ".scss"]
   },
   module: {
     loaders: [
