@@ -3,13 +3,13 @@ import { Route } from 'react-router-dom';
 
 import './Page.scss';
 
-import Ch1 from './Ch1/Ch1';
+import Intro from './Intro';
 
 export default class Page extends React.Component {
   render() {
     return (
       <div className="page">
-        <Route path="/" component={Ch1}></Route>
+        <Route path="/" component={Intro}></Route>
       </div>
     );
   }

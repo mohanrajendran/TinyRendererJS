@@ -1,3 +1,5 @@
+import Color from './Color';
+
 export default class CanvasImage {
   // pixel information
   private buf8: Uint8ClampedArray;
@@ -14,35 +16,32 @@ export default class CanvasImage {
   }
 
   private clear() {
-    this.data.fill(255 << 24);
+    this.data.fill(Color.black.rgba);
   }
 
-  setPixel(x: number, y: number, value: number[]) {
+  setPixel(x: number, y: number, color: Color) {
     if (x < 0 || x >= this.w || y < 0 || y >= this.h)
       return;
 
-    this.data[y * this.w + x] =
-      value[0] +
-      (value[1] << 8) +
-      (value[2] << 16) +
-      (value[3] << 24);
+    this.data[y * this.w + x] = color.rgba;
   }
 
   flipVertical() {
-    let a = 0;
-    let b = this.h - 1;
+    let start = 0;
+    let end = this.h - 1;
 
-    while (a < b) {
+    while (start < end) {
       for (let i = 0; i < this.w; i++) {
-        let c = this.data[a * this.w + i];
-        let d = this.data[b * this.w + i];
-
-        this.data[a * this.w + i] = d;
-        this.data[b * this.w + i] = c;
+        let pos1 = start * this.w + i;
+        let pos2 = end * this.w + i;
+        
+        this.data[pos1] ^= this.data[pos2];
+        this.data[pos2] ^= this.data[pos1];
+        this.data[pos1] ^= this.data[pos2];
       }
 
-      a++;
-      b--;
+      start++;
+      end--;
     }
   }
 

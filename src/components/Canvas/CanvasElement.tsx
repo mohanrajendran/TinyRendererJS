@@ -4,7 +4,7 @@ import CanvasImage from './CanvasImage';
 
 export interface CanvasElementProps { image: CanvasImage };
 
-export default class CanvasElement extends React.Component<CanvasElementProps, undefined> {
+export default class CanvasElement extends React.PureComponent<CanvasElementProps, undefined> {
   private canvas: HTMLCanvasElement;
 
   componentDidMount() {
