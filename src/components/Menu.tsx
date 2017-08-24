@@ -7,7 +7,8 @@ export default class Menu extends React.Component {
   render() {
     return (
       <div className="menu">
-        <Link to="/">Home</Link>
+        <Link to="/Intro">Intro</Link>
+        <Link to="/Ch1">Line Drawing</Link>
       </div>
     );
   }

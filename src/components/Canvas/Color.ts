@@ -23,4 +23,5 @@ export default class Color {
   static red: Color = new Color(255, 0, 0);
   static green: Color = new Color(0, 255, 0);
   static blue: Color = new Color(0, 0, 255);
+  static white: Color = new Color(255, 255, 255);
 }

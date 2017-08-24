@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/index.tsx',
+  devtool: 'source-map',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist')
@@ -19,5 +20,8 @@ module.exports = {
       { test: /\.tsx?$/, loader: 'ts-loader' },
       { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader'}
     ]
+  },
+  devServer: {
+    historyApiFallback: true
   }
 }

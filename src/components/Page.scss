@@ -1,4 +1,9 @@
-.page {
+.container {
   width: 85%;
   float: right;
+  height: 100vh;
+
+  .page {
+    border: 5px solid gray;
+  }
 }
