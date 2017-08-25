@@ -13,12 +13,18 @@ module.exports = {
     inject: 'body'
   })],
   resolve: {
-    extensions: [".ts", ".tsx", ".js", ".scss"]
+    extensions: [".ts", ".tsx", ".js", ".scss", ".obj"]
+  },
+  resolveLoader: {
+    alias: {
+      'obj-loader': path.join(__dirname, 'loaders', 'obj-loader.js')
+    }
   },
   module: {
     loaders: [
       { test: /\.tsx?$/, loader: 'ts-loader' },
-      { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader'}
+      { test: /\.scss$/, loader: 'style-loader!css-loader!sass-loader' },
+      { test: /\.obj$/, loader: 'obj-loader' }
     ]
   },
   devServer: {
