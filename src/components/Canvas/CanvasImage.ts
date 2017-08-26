@@ -48,7 +48,7 @@ export default class CanvasImage {
     }
   }
 
-  drawLine(v0: Vector, v1: Vector, color: Color): void {
+  drawLine(v0: Vector, v1: Vector, color: Color) {
     let steep = false;
     let x0 = v0.x;
     let y0 = v0.y;
@@ -94,6 +94,12 @@ export default class CanvasImage {
         error -= (dx * 2);
       }
     }
+  }
+
+  drawTriangle(v0: Vector, v1: Vector, v2: Vector, color: Color) {
+    this.drawLine(v0, v1, color);
+    this.drawLine(v1, v2, color);
+    this.drawLine(v2, v0, color);
   }
 
   writeToCanvas(canvas: HTMLCanvasElement) {

@@ -9,6 +9,7 @@ export default class Menu extends React.Component {
       <div className="menu">
         <Link to="/Intro">Intro</Link>
         <Link to="/Ch1">Line Drawing</Link>
+        <Link to="/Ch2">Triangle Drawing</Link>
       </div>
     );
   }

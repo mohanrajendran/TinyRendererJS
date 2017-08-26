@@ -11,6 +11,7 @@ export default class Page extends React.Component {
         <div className="page">
           <Route path="/Intro" component={Pages.Intro}></Route>
           <Route path="/Ch1" component={Pages.Ch1}></Route>
+          <Route path="/Ch2" component={Pages.Ch2}></Route>
         </div>
       </div>
     );
