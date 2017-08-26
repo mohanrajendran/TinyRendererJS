@@ -1,4 +1,5 @@
 import Color from './Color';
 import Mesh from './Mesh';
+import Vector from './Vector';
 
-export { Color, Mesh };
+export { Color, Mesh, Vector };

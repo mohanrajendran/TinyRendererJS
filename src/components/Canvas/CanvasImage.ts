@@ -1,4 +1,4 @@
-import { Color } from '../../models';
+import { Color, Vector } from '../../models';
 
 export default class CanvasImage {
   // pixel information
@@ -48,8 +48,12 @@ export default class CanvasImage {
     }
   }
 
-  drawLine(x0: number, y0: number, x1: number, y1: number, color: Color): void {
-    let steep: boolean = false;
+  drawLine(v0: Vector, v1: Vector, color: Color): void {
+    let steep = false;
+    let x0 = v0.x;
+    let y0 = v0.y;
+    let x1 = v1.x;
+    let y1 = v1.y;
 
     if (Math.abs(x0 - x1) < Math.abs(y0 - y1)) {
       let temp = x0;
@@ -95,8 +99,8 @@ export default class CanvasImage {
   writeToCanvas(canvas: HTMLCanvasElement) {
     canvas.height = this.h;
     canvas.width = this.w;
-    canvas.style.height = this.h*this.scale + 'px';
-    canvas.style.width = this.w*this.scale + 'px';
+    canvas.style.height = this.h * this.scale + 'px';
+    canvas.style.width = this.w * this.scale + 'px';
 
     const ctx = canvas.getContext('2d');
     const imageData = ctx.createImageData(this.w, this.h);
