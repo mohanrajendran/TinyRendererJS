@@ -6,9 +6,8 @@ export default class CanvasImage {
   private data: Uint32Array;
   private bytespp: number = 4; // Bytes per pixel
 
-  constructor(private w: number, private h: number) {
+  constructor(private w: number, private h: number, private scale: number = 1) {
     var buf = new ArrayBuffer(w * h * this.bytespp);
-    console.log(buf.byteLength);
 
     this.buf8 = new Uint8ClampedArray(buf);
     this.data = new Uint32Array(buf);
@@ -50,21 +49,28 @@ export default class CanvasImage {
   }
 
   drawLine(x0: number, y0: number, x1: number, y1: number, color: Color): void {
-    if (x0 > x1)
-      return this.drawLine(x1, y1, x0, y0, color);
-
     let steep: boolean = false;
 
     if (Math.abs(x0 - x1) < Math.abs(y0 - y1)) {
       let temp = x0;
       x0 = y0;
-      y0 = x0;
+      y0 = temp;
 
       temp = x1;
       x1 = y1;
-      y1 = x1;
+      y1 = temp;
 
       steep = true;
+    }
+
+    if (x0 > x1) {
+      let temp = x0;
+      x0 = x1;
+      x1 = temp;
+
+      temp = y0;
+      y0 = y1;
+      y1 = temp;
     }
 
     let dx = x1 - x0;
@@ -81,7 +87,7 @@ export default class CanvasImage {
       error += derror;
       if (error > dx) {
         y += (y1 > y0 ? 1 : -1);
-        error -= dx * 2;
+        error -= (dx * 2);
       }
     }
   }
@@ -89,8 +95,8 @@ export default class CanvasImage {
   writeToCanvas(canvas: HTMLCanvasElement) {
     canvas.height = this.h;
     canvas.width = this.w;
-    canvas.style.height = this.h + 'px';
-    canvas.style.width = this.w + 'px';
+    canvas.style.height = this.h*this.scale + 'px';
+    canvas.style.width = this.w*this.scale + 'px';
 
     const ctx = canvas.getContext('2d');
     const imageData = ctx.createImageData(this.w, this.h);
