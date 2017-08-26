@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import CanvasElement from '../Canvas/CanvasElement';
 import CanvasImage from '../Canvas/CanvasImage';
-import Color from '../Canvas/Color';
+import { Color } from '../../models';
 
 import { head } from '../Meshes';
 
@@ -15,9 +15,9 @@ export default class Ch1 extends React.Component {
 
     const image = new CanvasImage(800, 800, 0.75);
     head.faces.forEach(face => {
-      for(let i = 0; i < 3; i++) {
+      for (let i = 0; i < 3; i++) {
         let v0 = head.vertices[face[i] - 1];
-        let v1 = head.vertices[face[(i+1)%3] - 1];
+        let v1 = head.vertices[face[(i + 1) % 3] - 1];
 
         let x0 = (v0[0] + 1) * 400;
         let y0 = (v0[1] + 1) * 400;

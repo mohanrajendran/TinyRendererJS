@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import CanvasElement from '../Canvas/CanvasElement';
 import CanvasImage from '../Canvas/CanvasImage';
-import Color from '../Canvas/Color';
+import { Color } from '../../models';
 
 export default class Intro extends React.Component {
   render() {

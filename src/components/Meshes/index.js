@@ -1,5 +1,5 @@
 import head from './african_head.obj';
-import Mesh from './Mesh';
+import { Mesh } from '../../models';
 
 const headMesh = new Mesh(head);
 
