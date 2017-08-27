@@ -97,9 +97,31 @@ export default class CanvasImage {
   }
 
   drawTriangle(v0: Vector, v1: Vector, v2: Vector, color: Color) {
-    this.drawLine(v0, v1, color);
-    this.drawLine(v1, v2, color);
-    this.drawLine(v2, v0, color);
+    let xMin = Math.min(v0.x, v1.x, v2.x);
+    let xMax = Math.max(v0.x, v1.x, v2.x);
+    let yMin = Math.min(v0.y, v1.y, v2.y);
+    let yMax = Math.max(v0.y, v1.y, v2.y);
+
+    for (let x = xMin; x <= xMax; x++) {
+      for (let y = yMin; y <= yMax; y++) {
+        if (this.pointInTriangle(v0, v1, v2, new Vector(x, y)))
+          this.setPixel(x, y, color);
+      }
+    }
+  }
+
+  private pointInTriangle(v0: Vector, v1: Vector, v2: Vector, point: Vector): boolean {
+    let AB = v1.neg(v0);
+    let AC = v2.neg(v0);
+    let PA = v0.neg(point);
+
+    let vX = new Vector(AB.x, AC.x, PA.x);
+    let vY = new Vector(AB.y, AC.y, PA.y);
+
+    let cross = vX.cross(vY);
+    cross = cross.scale(1/cross.z);
+
+    return (cross.x > 0 && cross.y > 0 && (cross.x + cross.y <= 1));
   }
 
   writeToCanvas(canvas: HTMLCanvasElement) {
