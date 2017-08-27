@@ -15,10 +15,17 @@ export default class Ch1 extends React.Component {
     triangles.flipVertical();
 
     const image = new CanvasImage(800, 800, 0.75);
+    const lightDir = new Vector(0, 0, -1);
     head.faces.forEach(face => {
-      let color = new Color(Math.random()*255 >>> 0, Math.random()*255 >>> 0, Math.random()*255 >>> 0);
-      let v = [0,1,2].map(i => head.vertices[face[i] - 1].add(new Vector(1,1)).scale(400));
-      image.drawTriangle(v[0], v[1], v[2], color);
+      let v = [0,1,2].map(i => head.vertices[face[i] - 1]);
+      let n = (v[2].sub(v[0])).cross(v[1].sub(v[0])).normalize();
+      let i = n.dot(lightDir);
+
+      if(i > 0) {
+        let color = new Color(255*i, 255*i, 255*i);
+        let d = v.map(vec => vec.add(new Vector(1,1)).scale(400));
+        image.drawTriangle(d[0], d[1], d[2], color);
+      }
 /*
       for (let i = 0; i < 3; i++) {
         let v0 = head.vertices[face[i] - 1];

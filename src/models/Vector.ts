@@ -6,8 +6,13 @@ export default class Vector {
     return new Vector(this.x + that.x, this.y + that.y, this.z + that.z);
   }
 
-  neg(that: Vector): Vector {
+  sub(that: Vector): Vector {
     return new Vector(this.x - that.x, this.y - that.y, this.z - that.z);
+  }
+
+  normalize(): Vector {
+    let l = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    return new Vector(this.x / l, this.y / l, this.z / l);
   }
 
   scale(m: number): Vector {

@@ -111,9 +111,9 @@ export default class CanvasImage {
   }
 
   private pointInTriangle(v0: Vector, v1: Vector, v2: Vector, point: Vector): boolean {
-    let AB = v1.neg(v0);
-    let AC = v2.neg(v0);
-    let PA = v0.neg(point);
+    let AB = v1.sub(v0);
+    let AC = v2.sub(v0);
+    let PA = v0.sub(point);
 
     let vX = new Vector(AB.x, AC.x, PA.x);
     let vY = new Vector(AB.y, AC.y, PA.y);
