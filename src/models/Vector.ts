@@ -12,7 +12,7 @@ export default class Vector {
 
   normalize(): Vector {
     let l = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-    return new Vector(this.x / l, this.y / l, this.z / l);
+    return this.scale(1/l);
   }
 
   scale(m: number): Vector {

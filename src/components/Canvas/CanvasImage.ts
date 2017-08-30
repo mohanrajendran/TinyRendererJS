@@ -5,12 +5,24 @@ export default class CanvasImage {
   private buf8: Uint8ClampedArray;
   private data: Uint32Array;
   private bytespp: number = 4; // Bytes per pixel
+  private zbuffer: number[][];
 
-  constructor(private w: number, private h: number, private scale: number = 1) {
+  constructor(private w: number, private h: number, private scale: number = 1, enableZbuffer = false) {
     var buf = new ArrayBuffer(w * h * this.bytespp);
 
     this.buf8 = new Uint8ClampedArray(buf);
     this.data = new Uint32Array(buf);
+
+    if (enableZbuffer) {
+      this.zbuffer = [];
+      for (let i = 0; i < h; i++) {
+        let row = [];
+        for (let j = 0; j < w; j++) {
+          row.push(Number.NEGATIVE_INFINITY);
+        }
+        this.zbuffer.push(row);
+      }
+    }
 
     this.clear();
   }
@@ -97,20 +109,30 @@ export default class CanvasImage {
   }
 
   drawTriangle(v0: Vector, v1: Vector, v2: Vector, color: Color) {
-    let xMin = Math.min(v0.x, v1.x, v2.x);
-    let xMax = Math.max(v0.x, v1.x, v2.x);
-    let yMin = Math.min(v0.y, v1.y, v2.y);
-    let yMax = Math.max(v0.y, v1.y, v2.y);
+    let xMin = Math.min(v0.x, v1.x, v2.x) >>> 0;
+    let xMax = Math.max(v0.x, v1.x, v2.x) >>> 0;
+    let yMin = Math.min(v0.y, v1.y, v2.y) >>> 0;
+    let yMax = Math.max(v0.y, v1.y, v2.y) >>> 0;
 
     for (let x = xMin; x <= xMax; x++) {
       for (let y = yMin; y <= yMax; y++) {
-        if (this.pointInTriangle(v0, v1, v2, new Vector(x, y)))
-          this.setPixel(x, y, color);
+        let [u, v] = this.barycentricCoordinates(v0, v1, v2, new Vector(x, y));
+        if (u >= 0 && v >= 0 && (u + v) <= 1) {
+          let zLoc = v0.z + u * (v1.z - v0.z) + v * (v2.z - v0.z);
+          if (this.zbuffer) {
+            if (this.zbuffer[y][x] < zLoc) {
+              this.zbuffer[y][x] = zLoc;
+              this.setPixel(x, y, color);
+            }
+          } else {
+            this.setPixel(x, y, color);
+          }
+        }
       }
     }
   }
 
-  private pointInTriangle(v0: Vector, v1: Vector, v2: Vector, point: Vector): boolean {
+  private barycentricCoordinates(v0: Vector, v1: Vector, v2: Vector, point: Vector): [number, number] {
     let AB = v1.sub(v0);
     let AC = v2.sub(v0);
     let PA = v0.sub(point);
@@ -119,13 +141,13 @@ export default class CanvasImage {
     let vY = new Vector(AB.y, AC.y, PA.y);
 
     let cross = vX.cross(vY);
-    cross = cross.scale(1/cross.z);
+    cross = cross.scale(1 / cross.z);
 
-    return (cross.x > 0 && cross.y > 0 && (cross.x + cross.y <= 1));
+    return [cross.x, cross.y];
   }
 
   writeToCanvas(canvas: HTMLCanvasElement) {
-    canvas.height = this.h;
+    canvas.height = this.h
     canvas.width = this.w;
     canvas.style.height = this.h * this.scale + 'px';
     canvas.style.width = this.w * this.scale + 'px';
